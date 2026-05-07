@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errorHelpers/AppError";
 import status from "http-status";
 import { ICreateReviewPayload, IUpdateReviewPayload } from "./review.interface";
-import { Prisma } from "../../../generated/prisma/index.js";
+import { Prisma } from "../../../../generated/prisma/index.js";
 
 const createReview = async (
     payload: ICreateReviewPayload,

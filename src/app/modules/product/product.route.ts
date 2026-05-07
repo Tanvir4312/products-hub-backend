@@ -4,7 +4,7 @@ import { validateRequest } from "../../middlewares/validateRequest";
 import { createProductValidationSchema, updateProductValidationSchema } from "./product.validation";
 import { multerUpload } from "../../config/multer.config";
 import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../generated/prisma/index.js";
+import { Role } from "../../../../generated/prisma/index.js";
 
 const router = Router();
 

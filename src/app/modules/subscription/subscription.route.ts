@@ -3,7 +3,7 @@ import { SubscriptionController } from "./subscription.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { subscribeValidationSchema } from "./subscription.validation";
 import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../generated/prisma/index.js";
+import { Role } from "../../../../generated/prisma/index.js";
 
 const router = Router();
 

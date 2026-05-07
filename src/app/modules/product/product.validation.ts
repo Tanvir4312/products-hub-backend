@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductStatus } from "../../../generated/prisma/index.js";
+import { ProductStatus } from "../../../../generated/prisma/index.js";
 
 export const createProductValidationSchema = z.object({
     name: z

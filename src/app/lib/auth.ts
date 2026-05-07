@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
-import { Role, UserStatus } from "../../generated/prisma/index.js";
+import { Role, UserStatus } from "../../../generated/prisma/index.js";
 import { bearer, emailOTP, oAuthProxy } from "better-auth/plugins";
 
 import { envVars } from "../config/env";

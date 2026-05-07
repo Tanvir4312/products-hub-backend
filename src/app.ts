@@ -9,6 +9,8 @@ import path from "path";
 import { envVars } from "./app/config/env";
 import cors from "cors";
 import { notFound } from "./app/middlewares/notFound";
+import { requestLogger } from "./app/middlewares/requestLogger";
+import rateLimit from "express-rate-limit";
 
 
 
@@ -42,7 +44,30 @@ app.use(
   }),
 );
 
-app.use("/api/auth", toNodeHandler(auth));
+// Stricter rate limiter for auth routes
+const authLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // limit each IP to 10 requests per windowMs
+    message: "Too many requests, please try again later",
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Global rate limiter for non-auth routes
+const globalLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests, please try again later",
+    standardHeaders: true,
+    legacyHeaders: false,
+    skip: (req) => req.path.startsWith("/api/auth"),
+});
+
+// Apply stricter rate limit on auth routes
+app.use("/api/auth", authLimiter, toNodeHandler(auth));
+
+// Apply global rate limiter
+app.use(globalLimiter);
 // Enable URL-encoded form data parsing
 app.use(express.urlencoded({ extended: true }));
 
@@ -50,6 +75,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// Request logging middleware
+app.use(requestLogger);
 
 app.use("/api/v1", IndexRoutes);
 

@@ -1,0 +1,283 @@
+model Admin {
+  id            String    @id @default(uuid(7))
+  name          String
+  email         String    @unique
+  profilePhoto  String?
+  contactNumber String?
+  gender        Gender?
+  isDeleted     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email])
+  @@index([isDeleted])
+  @@map("admins")
+}
+
+model User {
+  id                 String          @id @default(uuid())
+  name               String
+  email              String          @unique
+  emailVerified      Boolean         @default(true)
+  image              String?
+  profilePhoto       String?
+  role               Role            @default(USER)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  status             UserStatus      @default(ACTIVE)
+  needPasswordChange Boolean         @default(false)
+  isDeleted          Boolean         @default(false)
+  deletedAt          DateTime?
+  accounts           Account[]
+  admin              Admin?
+  moderator          Moderator?
+  products           Product[]
+  reports            ProductReport[]
+  votedProducts      ProductVote[]
+  reviews            Review[]
+  sessions           Session[]
+  subscriber         Subscriber?
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  couponCode  String   @unique
+  description String
+  discount    Float
+  usageLimit  Int      @default(1)
+  usedCount   Int      @default(0)
+  isActive    Boolean  @default(true)
+  expiryDate  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coupon")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum SubscriptionStatus {
+  PENDING
+  VERIFIED
+  ACTIVE
+}
+
+enum ProductStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model Moderator {
+  id            String    @id @default(uuid(7))
+  name          String
+  email         String    @unique
+  profilePhoto  String?
+  contactNumber String?
+  gender        Gender
+  isDeleted     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email])
+  @@index([isDeleted])
+  @@map("moderators")
+}
+
+model Payment {
+  id               String     @id @default(cuid())
+  subscriberId     String
+  price            Float
+  transactionId    String     @unique
+  subscriptionDate DateTime
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  subscriber       Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  @@index([subscriberId])
+  @@map("payment")
+}
+
+model Product {
+  id             String          @id @default(cuid())
+  name           String
+  photo          String
+  description    String
+  votes          Int             @default(0)
+  isFeatured     Boolean         @default(false)
+  isDeleted      Boolean         @default(false)
+  status         ProductStatus   @default(PENDING)
+  report         Int             @default(0)
+  reportedStatus String?
+  ownerId        String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  owner          User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  reportedUsers  ProductReport[]
+  tags           ProductTag[]
+  votedUsers     ProductVote[]
+  reviews        Review[]
+
+  @@map("product")
+}
+
+model ProductReport {
+  id        String   @id @default(cuid())
+  reason    String?
+  productId String
+  userId    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+  @@map("product_report")
+}
+
+model ProductTag {
+  productId String
+  tagId     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([productId, tagId])
+  @@map("product_tags")
+}
+
+model ProductVote {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+  @@map("product_vote")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String
+  productId String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+  @@map("review")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+model Subscriber {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  name             String
+  role             String             @default("user")
+  isSubscribed     Boolean            @default(false)
+  paymentVerified  Boolean            @default(false)
+  status           SubscriptionStatus @default(PENDING)
+  subscriptionDate DateTime?
+  userId           String             @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  payments         Payment[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriber")
+}
+
+model Tag {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  products  ProductTag[]
+
+  @@map("tags")
+}

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { LoginUserController } from "./loginUser.controller";
 import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../generated/prisma/index.js";
+import { Role } from "../../../../generated/prisma/index.js";
 import { multerUpload } from "../../config/multer.config";
 
 const router = Router();

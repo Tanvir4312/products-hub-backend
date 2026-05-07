@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errorHelpers/AppError";
 import status from "http-status";
 import { ISubscribePayload, ISubscriptionResponse, ISubscriberFilterRequest } from "./subscription.interface";
-import { Prisma, SubscriptionStatus } from "../../../generated/prisma/index.js";
+import { Prisma, SubscriptionStatus } from "../../../../generated/prisma/index.js";
 
 const SUBSCRIPTION_FEE = 500;
 

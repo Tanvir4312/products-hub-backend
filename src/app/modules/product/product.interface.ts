@@ -1,4 +1,4 @@
-import { ProductStatus } from "../../../generated/prisma/index.js";
+import { ProductStatus } from "../../../../generated/prisma/index.js";
 
 export interface ICreateProductPayload {
     name: string;

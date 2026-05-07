@@ -3,7 +3,7 @@ import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { IModeratorUpadatePayload, IModeratorFilterRequest } from "./moderator.interface";
 import { IRequestUser } from "../../interfaces/requestUser.inteface";
-import { Prisma, UserStatus } from "../../../generated/prisma/index.js";
+import { Prisma, UserStatus } from "../../../../generated/prisma/index.js";
 
 import { moderatorSearchableFields } from "./moderator.constant";
 

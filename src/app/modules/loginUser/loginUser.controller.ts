@@ -3,7 +3,7 @@ import { LoginUserServices } from "./loginUser.service";
 import { catchAsync } from "../../shared/cathAsync";
 import { sendResponse } from "../../shared/sendResponse";
 import status from "http-status";
-import { Role } from "../../../generated/prisma/index.js";
+import { Role } from "../../../../generated/prisma/index.js";
 import pick from "../../shared/pick";
 import { getPaginationOptions } from "../../helper/paginationHelper";
 import { userFilterableFields } from "./loginUser.constant";

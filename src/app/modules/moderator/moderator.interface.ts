@@ -1,4 +1,4 @@
-import { Gender, UserStatus } from "../../../generated/prisma/index.js";
+import { Gender, UserStatus } from "../../../../generated/prisma/index.js";
 
 export interface IModeratorUpadatePayload {
   name?: string;

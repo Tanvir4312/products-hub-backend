@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errorHelpers/AppError";
 import status from "http-status";
 import { ICreateCouponPayload, IUpdateCouponPayload, ICouponFilterRequest } from "./coupon.interface";
-import { Prisma } from "../../../generated/prisma/index.js";
+import { Prisma } from "../../../../generated/prisma/index.js";
 import { couponSearchableFields } from "./coupon.constant";
 
 // Helper function to check if coupon is expired and update isActive
@@ -263,7 +263,7 @@ const validateCoupon = async (couponCode: string) => {
 export const CouponServices = {
     createCoupon,
     getAllCoupons,
-  
+
     updateCoupon,
     deleteCoupon,
     validateCoupon,

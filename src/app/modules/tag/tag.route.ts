@@ -3,7 +3,7 @@ import { TagController } from "./tag.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { createTagValidationSchema, updateTagValidationSchema } from "./tag.validation";
 import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../generated/prisma";
+import { Role } from "../../../../generated/prisma/index.js";
 
 const router = Router();
 

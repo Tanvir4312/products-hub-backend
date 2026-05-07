@@ -3,7 +3,7 @@ import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { ICreateAdmin, ICreateModeratorPayload } from "./adminModeratorCreate..interface";
 import { auth } from "../../lib/auth";
-import { Prisma, Role } from "../../../generated/prisma/index.js";
+import { Prisma, Role } from "../../../../generated/prisma/index.js";
 
 
 const createModerator = async (payload: ICreateModeratorPayload) => {

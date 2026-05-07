@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errorHelpers/AppError";
 import status from "http-status";
 import { IUpdateUserPayload, IUserFilterRequest } from "./loginUser.interface";
-import { Role, Prisma } from "../../../generated/prisma/index.js";
+import { Role, Prisma } from "../../../../generated/prisma/index.js";
 import { userSearchableFields } from "./loginUser.constant";
 
 const updateUser = async (

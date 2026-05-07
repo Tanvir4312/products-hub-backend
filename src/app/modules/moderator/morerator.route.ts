@@ -3,7 +3,7 @@ import { ModeratorController } from "./moderator.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { updateModeratorValidationSchema } from "./moderator.validation";
 import { checkAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../generated/prisma/index.js";
+import { Role } from "../../../../generated/prisma/index.js";
 import { multerUpload } from "../../config/multer.config";
 
 const router = Router();

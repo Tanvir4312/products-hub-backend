@@ -8,7 +8,7 @@ import {
   IAdminFilterRequest,
 } from "./admin.interface";
 
-import { Role, UserStatus, Prisma } from "../../../generated/prisma/index.js";
+import { Role, UserStatus, Prisma } from "../../../../generated/prisma/index.js";
 import { IRequestUser } from "../../interfaces/requestUser.inteface";
 import { adminSearchableFields } from "./admin.constant";
 

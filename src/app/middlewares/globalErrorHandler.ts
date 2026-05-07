@@ -12,7 +12,7 @@ import z from "zod";
 import { simplifiedZodError } from "../errorHelpers/handleZodError";
 
 
-import { Prisma } from "../../generated/prisma/index.js";
+import { Prisma } from "../../../generated/prisma/index.js";
 import {
   handlePrismaClientKnownRequestError,
   handlePrismaClientUnknownError,
@@ -21,6 +21,7 @@ import {
   handlerPrismaClientRustPanicError,
 } from "../errorHelpers/handlePrismaError";
 import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler";
+import logger from "../utils/logger";
 
 
 export const globalErrorHandler = async (
@@ -29,9 +30,17 @@ export const globalErrorHandler = async (
   res: Response,
   next: NextFunction,
 ) => {
-  if (envVars.NODE_ENV === "development") {
-    console.log("Error from global error handler ", err);
-  }
+  // Log error with stack trace and request details
+  logger.error("Global Error Handler", {
+    message: err.message || "Unknown error",
+    stack: err.stack,
+    statusCode: err.statusCode || status.INTERNAL_SERVER_ERROR,
+    method: req.method,
+    url: req.originalUrl || req.url,
+    ip: req.ip || req.socket.remoteAddress,
+    userAgent: req.get("user-agent"),
+    errorType: err.constructor?.name || "Unknown",
+  });
  
 
   await deleteUploadedFilesFromGlobalErrorHandler(req);
@@ -98,7 +107,6 @@ export const globalErrorHandler = async (
     stack: envVars.NODE_ENV === "development" ? err.stack : undefined,
     error: envVars.NODE_ENV === "development" ? err.message : undefined,
   };
-
 
   res.status(statusCode).json(response);
 };

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender } from "../../../generated/prisma/index.js";
+import { Gender } from "../../../../generated/prisma/index.js";
 
 export const updateModeratorValidationSchema = z.object({
 

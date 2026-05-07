@@ -2,8 +2,9 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errorHelpers/AppError";
 import status from "http-status";
 import { ICreateProductPayload, IUpdateProductPayload, IProductFilterRequest } from "./product.interface";
-import { Prisma } from "../../../generated/prisma/index.js";
+import { Prisma } from "../../../../generated/prisma/index.js";
 import { productSearchableFields } from "./product.constant";
+import { getCache, setCache } from "../../utils/cache";
 
 const createProduct = async (
     payload: ICreateProductPayload,
@@ -103,6 +104,15 @@ const getAllProducts = async (
     const { limit, skip, page } = options;
     const sortBy = options.sortBy || "createdAt";
     const sortOrder = options.sortOrder || "desc";
+
+    // Generate cache key based on query params
+    const cacheKey = `products:list:${JSON.stringify({ searchTerm, filterData, limit, skip, sortBy, sortOrder })}`;
+
+    // Check cache first
+    const cached = await getCache<{ data: any; meta: any }>(cacheKey);
+    if (cached) {
+        return cached;
+    }
 
     const andCondition: Prisma.ProductWhereInput[] = [];
 
@@ -207,7 +217,7 @@ const getAllProducts = async (
         where: whereConditions,
     });
 
-    return {
+    const result = {
         data: products,
         meta: {
             limit,
@@ -216,6 +226,12 @@ const getAllProducts = async (
             total: totalProducts,
         },
     };
+
+    // Cache result with TTL between 60-120 seconds
+    const ttl = Math.floor(Math.random() * 61) + 60; // Random between 60-120
+    await setCache(cacheKey, result, ttl);
+
+    return result;
 };
 
 const getProductById = async (id: string) => {
