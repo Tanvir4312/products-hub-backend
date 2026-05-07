@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ProductStatus } from "../../../generated/prisma/index.js";
 
 export const createProductValidationSchema = z.object({
     name: z
@@ -23,5 +24,8 @@ export const updateProductValidationSchema = z.object({
         .optional(),
     tagIds: z
         .array(z.string())
+        .optional(),
+    status: z
+        .enum([ProductStatus.PENDING, ProductStatus.APPROVED, ProductStatus.REJECTED])
         .optional(),
 });

@@ -11,6 +11,8 @@ import { ProductRoutes } from "../modules/product/product.route";
 import { CouponRoutes } from "../modules/coupon/coupon.route";
 import { SubscriptionRoutes } from "../modules/subscription/subscription.route";
 import { ReviewRoutes } from "../modules/review/review.route";
+import { VoteRoutes } from "../modules/vote/vote.route";
+import { ReportRoutes } from "../modules/report/report.route";
 
 const router = Router();
 
@@ -26,6 +28,8 @@ router.use("/products", ProductRoutes);
 router.use("/coupons", CouponRoutes);
 router.use("/subscription", SubscriptionRoutes);
 router.use("/reviews", ReviewRoutes);
+router.use("/products/vote", VoteRoutes);
+router.use("/products/report", ReportRoutes);
 
 router.use("/chat", ChatRoutes);
 

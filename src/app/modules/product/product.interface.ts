@@ -13,6 +13,7 @@ export interface IUpdateProductPayload {
     tagIds?: string[];
     photo?: string;
     featured?: boolean;
+    status ?: ProductStatus
 }
 
 export interface IProductFilterRequest {

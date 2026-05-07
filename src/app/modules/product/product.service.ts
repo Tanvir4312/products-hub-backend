@@ -196,6 +196,7 @@ const getAllProducts = async (
             _count: {
                 select: {
                     votedUsers: true,
+                    reportedUsers : true,
                     reviews: true,
                 },
             },
@@ -283,7 +284,7 @@ const updateProduct = async (
     currentUserId: string,
     currentUserRole: string
 ) => {
-    const { name, description, tagIds, photo } = payload;
+    const { name, description, tagIds, photo, status: productStatus } = payload;
 
     // Check if product exists
     const existingProduct = await prisma.product.findUnique({
@@ -315,6 +316,7 @@ const updateProduct = async (
     if (name !== undefined) updateData.name = name.trim();
     if (description !== undefined) updateData.description = description.trim();
     if (photo !== undefined) updateData.photo = photo;
+    if (productStatus !== undefined) updateData.status = productStatus;
 
     // Handle tag updates
     let uniqueTagIds: string[] | undefined;
