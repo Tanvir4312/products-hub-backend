@@ -1,0 +1,23 @@
+model Product {
+  id             String          @id @default(cuid())
+  name           String
+  photo          String
+  description    String
+  links          String
+  votes          Int             @default(0)
+  isFeatured     Boolean         @default(false)
+  isDeleted      Boolean         @default(false)
+  status         ProductStatus   @default(PENDING)
+  report         Int             @default(0)
+  reportedStatus String?
+  ownerId        String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  owner          User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  reportedUsers  ProductReport[]
+  tags           ProductTag[]
+  votedUsers     ProductVote[]
+  reviews        Review[]
+
+  @@map("product")
+}

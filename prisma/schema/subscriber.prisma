@@ -1,0 +1,17 @@
+model Subscriber {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  name             String
+  role             String             @default("user")
+  isSubscribed     Boolean            @default(false)
+  paymentVerified  Boolean            @default(false)
+  status           SubscriptionStatus @default(PENDING)
+  subscriptionDate DateTime?
+  userId           String             @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  payments         Payment[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriber")
+}

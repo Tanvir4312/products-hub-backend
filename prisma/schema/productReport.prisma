@@ -1,0 +1,12 @@
+model ProductReport {
+  id        String   @id @default(cuid())
+  reason    String?
+  productId String
+  userId    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+  @@map("product_report")
+}

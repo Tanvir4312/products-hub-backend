@@ -1,0 +1,14 @@
+model Coupon {
+  id          String   @id @default(cuid())
+  couponCode  String   @unique
+  description String
+  discount    Float
+  usageLimit  Int      @default(1)
+  usedCount   Int      @default(0)
+  isActive    Boolean  @default(true)
+  expiryDate  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coupon")
+}
