@@ -9,6 +9,8 @@ import { ModeratorRoutes } from "../modules/moderator/morerator.route";
 import { TagRoutes } from "../modules/tag/tag.route";
 import { ProductRoutes } from "../modules/product/product.route";
 import { CouponRoutes } from "../modules/coupon/coupon.route";
+import { SubscriptionRoutes } from "../modules/subscription/subscription.route";
+import { ReviewRoutes } from "../modules/review/review.route";
 
 const router = Router();
 
@@ -22,6 +24,8 @@ router.use("/loginUser", LoginUserRoutes);
 router.use("/tags", TagRoutes);
 router.use("/products", ProductRoutes);
 router.use("/coupons", CouponRoutes);
+router.use("/subscription", SubscriptionRoutes);
+router.use("/reviews", ReviewRoutes);
 
 router.use("/chat", ChatRoutes);
 

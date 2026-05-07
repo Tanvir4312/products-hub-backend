@@ -38,6 +38,19 @@ const registerApplicant = async (payload: IRegisterData) => {
             emailVerified: true,
         },
     });
+
+    // Create associated subscriber record
+    await prisma.subscriber.create({
+        data: {
+            email: data.user.email,
+            name: data.user.name,
+            userId: data.user.id,
+            isSubscribed: false,
+            paymentVerified: false,
+            status: "PENDING",
+        },
+    });
+
     const accessToken = tokenUtils.getAccessToken({
         userId: data.user.id,
         role: data.user.role,
@@ -285,6 +298,18 @@ const googleLoginSuccess = async (session: Record<string, any>) => {
                 id: session.user.id,
                 email: session.user.email,
                 name: session.user.name,
+            },
+        });
+
+        // Create associated subscriber record
+        await prisma.subscriber.create({
+            data: {
+                email: session.user.email,
+                name: session.user.name,
+                userId: session.user.id,
+                isSubscribed: false,
+                paymentVerified: false,
+                status: "PENDING",
             },
         });
     }

@@ -181,6 +181,18 @@ const getAllProducts = async (
                     },
                 },
             },
+            reviews : {
+                select : {
+                    rating : true,
+                    comment : true,
+                    user : {
+                        select : {
+                            name : true,
+                            profilePhoto : true
+                        }
+                    }
+                }
+            },   
             _count: {
                 select: {
                     votedUsers: true,
