@@ -20,8 +20,6 @@ Whether you are a developer, a startup founder, or someone who simply works with
 
 ---
 
-A robust REST API for the Products Hub platform — built with Express 5, Prisma, PostgreSQL, and TypeScript. Supports product discovery, voting, user roles, subscriptions, and AI-powered features.
-
 ## 🔗 Links
 
 - 🌐 **Live Website:** [Products Hunt](https://products-hunt-frontend.vercel.app)
