@@ -3,6 +3,7 @@ import { Role, UserStatus, Gender } from "../../../../generated/prisma/index.js"
 
 export interface IUpdateAdminPayload {
     name?: string;
+    email?: string;
     profilePhoto?: string;
     contactNumber?: string;
 }

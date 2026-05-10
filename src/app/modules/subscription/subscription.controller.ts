@@ -39,7 +39,21 @@ const getAllSubscribers = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getMySubscription = catchAsync(async (req: Request, res: Response) => {
+    const currentUser = req.user;
+    
+    const result = await SubscriptionServices.getMySubscription(currentUser.userId);
+
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        message: "Subscription retrieved successfully",
+        success: true,
+        data: result,
+    });
+});
+
 export const SubscriptionController = {
     subscribe,
     getAllSubscribers,
+    getMySubscription,
 };

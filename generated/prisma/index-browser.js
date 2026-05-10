@@ -134,6 +134,11 @@ exports.Prisma.AdminScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.AiKnowledgeScalarFieldEnum = {
+  id: 'id',
+  content: 'content'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -141,13 +146,15 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   profilePhoto: 'profilePhoto',
+  contactNumber: 'contactNumber',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   status: 'status',
   needPasswordChange: 'needPasswordChange',
   isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  suspendedAt: 'suspendedAt'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -234,6 +241,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   status: 'status',
   report: 'report',
   reportedStatus: 'reportedStatus',
+  links: 'links',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -337,6 +345,7 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
 
 exports.Prisma.ModelName = {
   Admin: 'Admin',
+  AiKnowledge: 'AiKnowledge',
   User: 'User',
   Session: 'Session',
   Account: 'Account',

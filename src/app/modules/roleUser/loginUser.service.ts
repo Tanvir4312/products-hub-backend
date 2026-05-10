@@ -50,14 +50,47 @@ const updateUser = async (
         }
     }
 
-    const result = await prisma.user.update({
-        where: {
-            id: targetUserId,
-        },
-        data: {
-            ...payload,
-        },
-       
+    const result = await prisma.$transaction(async (tx) => {
+        // 1. Update the User record
+        const updatedUser = await tx.user.update({
+            where: {
+                id: targetUserId,
+            },
+            data: {
+                ...payload,
+            },
+        });
+
+        // 2. Prepare sub-table update data
+        const subTableUpdateData: any = {};
+        if (payload.name) subTableUpdateData.name = payload.name;
+        if (payload.email) subTableUpdateData.email = payload.email;
+        if (payload.profilePhoto) subTableUpdateData.profilePhoto = payload.profilePhoto;
+        if (payload.contactNumber) subTableUpdateData.contactNumber = payload.contactNumber;
+
+        // 3. Sync with Admin table if user is an ADMIN or SUPER_ADMIN
+        if (updatedUser.role === Role.ADMIN || updatedUser.role === Role.SUPER_ADMIN) {
+            const admin = await tx.admin.findUnique({ where: { userId: targetUserId } });
+            if (admin && Object.keys(subTableUpdateData).length > 0) {
+                await tx.admin.update({
+                    where: { userId: targetUserId },
+                    data: subTableUpdateData,
+                });
+            }
+        }
+
+        // 4. Sync with Moderator table if user is a MODERATOR
+        if (updatedUser.role === Role.MODERATOR) {
+            const moderator = await tx.moderator.findUnique({ where: { userId: targetUserId } });
+            if (moderator && Object.keys(subTableUpdateData).length > 0) {
+                await tx.moderator.update({
+                    where: { userId: targetUserId },
+                    data: subTableUpdateData,
+                });
+            }
+        }
+
+        return updatedUser;
     });
 
     return result;

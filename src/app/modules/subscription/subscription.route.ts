@@ -22,4 +22,11 @@ router.get(
     SubscriptionController.getAllSubscribers
 );
 
+// Get my subscription (authenticated users)
+router.get(
+    "/my-subscription",
+    checkAuth(Role.USER),
+    SubscriptionController.getMySubscription
+);
+
 export const SubscriptionRoutes = router;

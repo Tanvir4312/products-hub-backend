@@ -17,6 +17,14 @@ model Admin {
   @@map("admins")
 }
 
+model AiKnowledge {
+  id        String                @id @default(uuid())
+  content   String
+  embedding Unsupported("vector")
+
+  @@map("ai_knowledge")
+}
+
 model User {
   id                 String          @id @default(uuid())
   name               String
@@ -24,6 +32,7 @@ model User {
   emailVerified      Boolean         @default(true)
   image              String?
   profilePhoto       String?
+  contactNumber      String?
   role               Role            @default(USER)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -31,6 +40,7 @@ model User {
   needPasswordChange Boolean         @default(false)
   isDeleted          Boolean         @default(false)
   deletedAt          DateTime?
+  suspendedAt        DateTime?
   accounts           Account[]
   admin              Admin?
   moderator          Moderator?
@@ -180,7 +190,8 @@ model Product {
   isDeleted      Boolean         @default(false)
   status         ProductStatus   @default(PENDING)
   report         Int             @default(0)
-  reportedStatus String?
+  reportedStatus Boolean         @default(false)
+  links          String          @default("")
   ownerId        String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt

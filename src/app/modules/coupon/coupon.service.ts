@@ -112,9 +112,25 @@ const getAllCoupons = async (
     if (filterData.isActive !== undefined) {
         const isActiveValue = filterData.isActive === "true" ? true : filterData.isActive === "false" ? false : undefined;
         if (isActiveValue !== undefined) {
-            andCondition.push({
-                isActive: isActiveValue,
-            });
+            if (isActiveValue === true) {
+                // If requesting active coupons, only show those that are:
+                // 1. Manually set to active
+                // 2. Not expired
+                // 3. Not reached usage limit
+                andCondition.push({
+                    isActive: true,
+                    expiryDate: {
+                        gt: new Date(),
+                    },
+                    // We can't easily compare usedCount < usageLimit in Prisma where clause 
+                    // without a raw query or computed field.
+                    // However, we can at least filter by date here.
+                });
+            } else {
+                andCondition.push({
+                    isActive: false,
+                });
+            }
         }
     }
 
@@ -131,16 +147,26 @@ const getAllCoupons = async (
     });
 
     // Check expiry for each coupon and update if needed
-    const couponsWithExpiryCheck = await Promise.all(
-        coupons.map(async (coupon) => checkAndUpdateExpiry(coupon))
-    );
+    // ALSO filter out exhausted coupons if isActive=true was requested
+    const filteredCoupons = (await Promise.all(
+        coupons.map(async (coupon) => {
+            const updated = await checkAndUpdateExpiry(coupon);
+            return updated;
+        })
+    )).filter(coupon => {
+        // If we are filtering by active, also ensure usage limit isn't reached
+        if (filterData.isActive === "true") {
+            return coupon.isActive && coupon.usedCount < coupon.usageLimit;
+        }
+        return true;
+    });
 
     const totalCoupons = await prisma.coupon.count({
         where: whereConditions,
     });
 
     return {
-        data: couponsWithExpiryCheck,
+        data: filteredCoupons,
         meta: {
             limit,
             current_Page: page,

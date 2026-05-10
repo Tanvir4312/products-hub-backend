@@ -26,16 +26,21 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const { searchTerm } = req.query
+  const { searchTerm, role, status: filterStatus } = req.query
   const { page, limit, skip } = getPaginationOptions(req.query)
   const sortBy = req.query.sortBy || 'createdAt'
   const sortOrder = req.query.sortOrder || 'desc'
-  const result = await UserService.getAllUsers(searchTerm as string,
+  
+  const result = await UserService.getAllUsers(
+    searchTerm as string,
     page,
     limit,
     skip,
     sortBy as string,
-    sortOrder as string);
+    sortOrder as string,
+    role as string,
+    filterStatus as string
+  );
   sendResponse(res, {
     httpStatusCode: status.OK,
     message: "Users fetched successfully",

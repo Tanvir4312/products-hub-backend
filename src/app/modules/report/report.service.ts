@@ -43,18 +43,29 @@ const reportProduct = async (
         );
     }
 
-    // Create report
-    const report = await prisma.productReport.create({
-        data: {
-            productId,
-            userId,
-            reason: reason || null,
-        },
+    // Create report and update product stats in a transaction
+    await prisma.$transaction(async (tx) => {
+        // 1. Create the report record
+        await tx.productReport.create({
+            data: {
+                productId,
+                userId,
+                reason: reason || null,
+            },
+        });
+
+        // 2. Increment report count and set reportedStatus to true in the product table
+        await tx.product.update({
+            where: { id: productId },
+            data: {
+                report: { increment: 1 },
+                reportedStatus: true
+            },
+        });
     });
 
     return {
-        message: "Product reported successfully",
-        reportId: report.id,
+        message: "Report done",
         productId,
     };
 };

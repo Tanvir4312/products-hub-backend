@@ -1,7 +1,7 @@
 export const adminFilterableFields: string[] = [
     "searchTerm",
     "status",
-    "gender",
+    "role",
 ];
 
 export const adminSearchableFields: string[] = [

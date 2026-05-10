@@ -8,7 +8,8 @@ model Product {
   isDeleted      Boolean         @default(false)
   status         ProductStatus   @default(PENDING)
   report         Int             @default(0)
-  reportedStatus String?
+  reportedStatus Boolean         @default(false)
+  links          String          @default("")
   ownerId        String
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt

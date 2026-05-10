@@ -11,7 +11,7 @@ const router = Router();
 // Create product with image upload (authenticated users)
 router.post(
     "/create",
-    checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN, Role.MODERATOR),
+    checkAuth(Role.USER, Role.SUPER_ADMIN),
     multerUpload.single("photo"),
     validateRequest(createProductValidationSchema),
     ProductController.createProduct
@@ -21,6 +21,13 @@ router.post(
 router.get(
     "/",
     ProductController.getAllProducts
+);
+
+// Get my products (authenticated)
+router.get(
+    "/my-products",
+    checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN, Role.MODERATOR),
+    ProductController.getMyProducts
 );
 
 // Get single product by ID (public)

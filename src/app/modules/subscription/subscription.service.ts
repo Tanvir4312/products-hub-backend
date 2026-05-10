@@ -249,7 +249,35 @@ const getAllSubscribers = async (
     };
 };
 
+const getMySubscription = async (userId: string) => {
+    const subscriber = await prisma.subscriber.findUnique({
+        where: { userId },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    profilePhoto: true,
+                },
+            },
+            payments: {
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+        },
+    });
+
+    if (!subscriber) {
+        throw new AppError(status.NOT_FOUND, "Subscription not found");
+    }
+
+    return subscriber;
+};
+
 export const SubscriptionServices = {
     subscribe,
     getAllSubscribers,
+    getMySubscription,
 };

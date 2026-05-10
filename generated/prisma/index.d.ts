@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
 /**
+ * Model AiKnowledge
+ * 
+ */
+export type AiKnowledge = $Result.DefaultSelection<Prisma.$AiKnowledgePayload>
+/**
  * Model User
  * 
  */
@@ -290,6 +295,16 @@ export class PrismaClient<
     * ```
     */
   get admin(): Prisma.AdminDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiKnowledge`: Exposes CRUD operations for the **AiKnowledge** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiKnowledges
+    * const aiKnowledges = await prisma.aiKnowledge.findMany()
+    * ```
+    */
+  get aiKnowledge(): Prisma.AiKnowledgeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -865,6 +880,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Admin: 'Admin',
+    AiKnowledge: 'AiKnowledge',
     User: 'User',
     Session: 'Session',
     Account: 'Account',
@@ -894,7 +910,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admin" | "user" | "session" | "account" | "verification" | "coupon" | "moderator" | "payment" | "product" | "productReport" | "productTag" | "productVote" | "review" | "subscriber" | "tag"
+      modelProps: "admin" | "aiKnowledge" | "user" | "session" | "account" | "verification" | "coupon" | "moderator" | "payment" | "product" | "productReport" | "productTag" | "productVote" | "review" | "subscriber" | "tag"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -969,6 +985,64 @@ export namespace Prisma {
           count: {
             args: Prisma.AdminCountArgs<ExtArgs>
             result: $Utils.Optional<AdminCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiKnowledge: {
+        payload: Prisma.$AiKnowledgePayload<ExtArgs>
+        fields: Prisma.AiKnowledgeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiKnowledgeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiKnowledgeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>
+          }
+          findFirst: {
+            args: Prisma.AiKnowledgeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiKnowledgeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>
+          }
+          findMany: {
+            args: Prisma.AiKnowledgeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>[]
+          }
+          delete: {
+            args: Prisma.AiKnowledgeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>
+          }
+          update: {
+            args: Prisma.AiKnowledgeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>
+          }
+          deleteMany: {
+            args: Prisma.AiKnowledgeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiKnowledgeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiKnowledgeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiKnowledgePayload>[]
+          }
+          aggregate: {
+            args: Prisma.AiKnowledgeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiKnowledge>
+          }
+          groupBy: {
+            args: Prisma.AiKnowledgeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiKnowledgeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiKnowledgeCountArgs<ExtArgs>
+            result: $Utils.Optional<AiKnowledgeCountAggregateOutputType> | number
           }
         }
       }
@@ -2117,6 +2191,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     admin?: AdminOmit
+    aiKnowledge?: AiKnowledgeOmit
     user?: UserOmit
     session?: SessionOmit
     account?: AccountOmit
@@ -3548,6 +3623,818 @@ export namespace Prisma {
 
 
   /**
+   * Model AiKnowledge
+   */
+
+  export type AggregateAiKnowledge = {
+    _count: AiKnowledgeCountAggregateOutputType | null
+    _min: AiKnowledgeMinAggregateOutputType | null
+    _max: AiKnowledgeMaxAggregateOutputType | null
+  }
+
+  export type AiKnowledgeMinAggregateOutputType = {
+    id: string | null
+    content: string | null
+  }
+
+  export type AiKnowledgeMaxAggregateOutputType = {
+    id: string | null
+    content: string | null
+  }
+
+  export type AiKnowledgeCountAggregateOutputType = {
+    id: number
+    content: number
+    _all: number
+  }
+
+
+  export type AiKnowledgeMinAggregateInputType = {
+    id?: true
+    content?: true
+  }
+
+  export type AiKnowledgeMaxAggregateInputType = {
+    id?: true
+    content?: true
+  }
+
+  export type AiKnowledgeCountAggregateInputType = {
+    id?: true
+    content?: true
+    _all?: true
+  }
+
+  export type AiKnowledgeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiKnowledge to aggregate.
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiKnowledges to fetch.
+     */
+    orderBy?: AiKnowledgeOrderByWithRelationInput | AiKnowledgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiKnowledgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiKnowledges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiKnowledges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiKnowledges
+    **/
+    _count?: true | AiKnowledgeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiKnowledgeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiKnowledgeMaxAggregateInputType
+  }
+
+  export type GetAiKnowledgeAggregateType<T extends AiKnowledgeAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiKnowledge]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiKnowledge[P]>
+      : GetScalarType<T[P], AggregateAiKnowledge[P]>
+  }
+
+
+
+
+  export type AiKnowledgeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiKnowledgeWhereInput
+    orderBy?: AiKnowledgeOrderByWithAggregationInput | AiKnowledgeOrderByWithAggregationInput[]
+    by: AiKnowledgeScalarFieldEnum[] | AiKnowledgeScalarFieldEnum
+    having?: AiKnowledgeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiKnowledgeCountAggregateInputType | true
+    _min?: AiKnowledgeMinAggregateInputType
+    _max?: AiKnowledgeMaxAggregateInputType
+  }
+
+  export type AiKnowledgeGroupByOutputType = {
+    id: string
+    content: string
+    _count: AiKnowledgeCountAggregateOutputType | null
+    _min: AiKnowledgeMinAggregateOutputType | null
+    _max: AiKnowledgeMaxAggregateOutputType | null
+  }
+
+  type GetAiKnowledgeGroupByPayload<T extends AiKnowledgeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiKnowledgeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiKnowledgeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiKnowledgeGroupByOutputType[P]>
+            : GetScalarType<T[P], AiKnowledgeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiKnowledgeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+  }, ExtArgs["result"]["aiKnowledge"]>
+
+
+  export type AiKnowledgeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    content?: boolean
+  }, ExtArgs["result"]["aiKnowledge"]>
+
+  export type AiKnowledgeSelectScalar = {
+    id?: boolean
+    content?: boolean
+  }
+
+  export type AiKnowledgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content", ExtArgs["result"]["aiKnowledge"]>
+
+  export type $AiKnowledgePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiKnowledge"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      content: string
+    }, ExtArgs["result"]["aiKnowledge"]>
+    composites: {}
+  }
+
+  type AiKnowledgeGetPayload<S extends boolean | null | undefined | AiKnowledgeDefaultArgs> = $Result.GetResult<Prisma.$AiKnowledgePayload, S>
+
+  type AiKnowledgeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiKnowledgeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiKnowledgeCountAggregateInputType | true
+    }
+
+  export interface AiKnowledgeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiKnowledge'], meta: { name: 'AiKnowledge' } }
+    /**
+     * Find zero or one AiKnowledge that matches the filter.
+     * @param {AiKnowledgeFindUniqueArgs} args - Arguments to find a AiKnowledge
+     * @example
+     * // Get one AiKnowledge
+     * const aiKnowledge = await prisma.aiKnowledge.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiKnowledgeFindUniqueArgs>(args: SelectSubset<T, AiKnowledgeFindUniqueArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiKnowledge that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiKnowledgeFindUniqueOrThrowArgs} args - Arguments to find a AiKnowledge
+     * @example
+     * // Get one AiKnowledge
+     * const aiKnowledge = await prisma.aiKnowledge.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiKnowledgeFindUniqueOrThrowArgs>(args: SelectSubset<T, AiKnowledgeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiKnowledge that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeFindFirstArgs} args - Arguments to find a AiKnowledge
+     * @example
+     * // Get one AiKnowledge
+     * const aiKnowledge = await prisma.aiKnowledge.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiKnowledgeFindFirstArgs>(args?: SelectSubset<T, AiKnowledgeFindFirstArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiKnowledge that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeFindFirstOrThrowArgs} args - Arguments to find a AiKnowledge
+     * @example
+     * // Get one AiKnowledge
+     * const aiKnowledge = await prisma.aiKnowledge.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiKnowledgeFindFirstOrThrowArgs>(args?: SelectSubset<T, AiKnowledgeFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiKnowledges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiKnowledges
+     * const aiKnowledges = await prisma.aiKnowledge.findMany()
+     * 
+     * // Get first 10 AiKnowledges
+     * const aiKnowledges = await prisma.aiKnowledge.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiKnowledgeWithIdOnly = await prisma.aiKnowledge.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiKnowledgeFindManyArgs>(args?: SelectSubset<T, AiKnowledgeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiKnowledge.
+     * @param {AiKnowledgeDeleteArgs} args - Arguments to delete one AiKnowledge.
+     * @example
+     * // Delete one AiKnowledge
+     * const AiKnowledge = await prisma.aiKnowledge.delete({
+     *   where: {
+     *     // ... filter to delete one AiKnowledge
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiKnowledgeDeleteArgs>(args: SelectSubset<T, AiKnowledgeDeleteArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiKnowledge.
+     * @param {AiKnowledgeUpdateArgs} args - Arguments to update one AiKnowledge.
+     * @example
+     * // Update one AiKnowledge
+     * const aiKnowledge = await prisma.aiKnowledge.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiKnowledgeUpdateArgs>(args: SelectSubset<T, AiKnowledgeUpdateArgs<ExtArgs>>): Prisma__AiKnowledgeClient<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiKnowledges.
+     * @param {AiKnowledgeDeleteManyArgs} args - Arguments to filter AiKnowledges to delete.
+     * @example
+     * // Delete a few AiKnowledges
+     * const { count } = await prisma.aiKnowledge.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiKnowledgeDeleteManyArgs>(args?: SelectSubset<T, AiKnowledgeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiKnowledges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiKnowledges
+     * const aiKnowledge = await prisma.aiKnowledge.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiKnowledgeUpdateManyArgs>(args: SelectSubset<T, AiKnowledgeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiKnowledges and returns the data updated in the database.
+     * @param {AiKnowledgeUpdateManyAndReturnArgs} args - Arguments to update many AiKnowledges.
+     * @example
+     * // Update many AiKnowledges
+     * const aiKnowledge = await prisma.aiKnowledge.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiKnowledges and only return the `id`
+     * const aiKnowledgeWithIdOnly = await prisma.aiKnowledge.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiKnowledgeUpdateManyAndReturnArgs>(args: SelectSubset<T, AiKnowledgeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiKnowledgePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+
+    /**
+     * Count the number of AiKnowledges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeCountArgs} args - Arguments to filter AiKnowledges to count.
+     * @example
+     * // Count the number of AiKnowledges
+     * const count = await prisma.aiKnowledge.count({
+     *   where: {
+     *     // ... the filter for the AiKnowledges we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiKnowledgeCountArgs>(
+      args?: Subset<T, AiKnowledgeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiKnowledgeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiKnowledge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiKnowledgeAggregateArgs>(args: Subset<T, AiKnowledgeAggregateArgs>): Prisma.PrismaPromise<GetAiKnowledgeAggregateType<T>>
+
+    /**
+     * Group by AiKnowledge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiKnowledgeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiKnowledgeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiKnowledgeGroupByArgs['orderBy'] }
+        : { orderBy?: AiKnowledgeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiKnowledgeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiKnowledgeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiKnowledge model
+   */
+  readonly fields: AiKnowledgeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiKnowledge.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiKnowledgeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiKnowledge model
+   */
+  interface AiKnowledgeFieldRefs {
+    readonly id: FieldRef<"AiKnowledge", 'String'>
+    readonly content: FieldRef<"AiKnowledge", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiKnowledge findUnique
+   */
+  export type AiKnowledgeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter, which AiKnowledge to fetch.
+     */
+    where: AiKnowledgeWhereUniqueInput
+  }
+
+  /**
+   * AiKnowledge findUniqueOrThrow
+   */
+  export type AiKnowledgeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter, which AiKnowledge to fetch.
+     */
+    where: AiKnowledgeWhereUniqueInput
+  }
+
+  /**
+   * AiKnowledge findFirst
+   */
+  export type AiKnowledgeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter, which AiKnowledge to fetch.
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiKnowledges to fetch.
+     */
+    orderBy?: AiKnowledgeOrderByWithRelationInput | AiKnowledgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiKnowledges.
+     */
+    cursor?: AiKnowledgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiKnowledges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiKnowledges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiKnowledges.
+     */
+    distinct?: AiKnowledgeScalarFieldEnum | AiKnowledgeScalarFieldEnum[]
+  }
+
+  /**
+   * AiKnowledge findFirstOrThrow
+   */
+  export type AiKnowledgeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter, which AiKnowledge to fetch.
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiKnowledges to fetch.
+     */
+    orderBy?: AiKnowledgeOrderByWithRelationInput | AiKnowledgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiKnowledges.
+     */
+    cursor?: AiKnowledgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiKnowledges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiKnowledges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiKnowledges.
+     */
+    distinct?: AiKnowledgeScalarFieldEnum | AiKnowledgeScalarFieldEnum[]
+  }
+
+  /**
+   * AiKnowledge findMany
+   */
+  export type AiKnowledgeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter, which AiKnowledges to fetch.
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiKnowledges to fetch.
+     */
+    orderBy?: AiKnowledgeOrderByWithRelationInput | AiKnowledgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiKnowledges.
+     */
+    cursor?: AiKnowledgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiKnowledges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiKnowledges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiKnowledges.
+     */
+    distinct?: AiKnowledgeScalarFieldEnum | AiKnowledgeScalarFieldEnum[]
+  }
+
+  /**
+   * AiKnowledge update
+   */
+  export type AiKnowledgeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AiKnowledge.
+     */
+    data: XOR<AiKnowledgeUpdateInput, AiKnowledgeUncheckedUpdateInput>
+    /**
+     * Choose, which AiKnowledge to update.
+     */
+    where: AiKnowledgeWhereUniqueInput
+  }
+
+  /**
+   * AiKnowledge updateMany
+   */
+  export type AiKnowledgeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiKnowledges.
+     */
+    data: XOR<AiKnowledgeUpdateManyMutationInput, AiKnowledgeUncheckedUpdateManyInput>
+    /**
+     * Filter which AiKnowledges to update
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * Limit how many AiKnowledges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiKnowledge updateManyAndReturn
+   */
+  export type AiKnowledgeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * The data used to update AiKnowledges.
+     */
+    data: XOR<AiKnowledgeUpdateManyMutationInput, AiKnowledgeUncheckedUpdateManyInput>
+    /**
+     * Filter which AiKnowledges to update
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * Limit how many AiKnowledges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiKnowledge delete
+   */
+  export type AiKnowledgeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+    /**
+     * Filter which AiKnowledge to delete.
+     */
+    where: AiKnowledgeWhereUniqueInput
+  }
+
+  /**
+   * AiKnowledge deleteMany
+   */
+  export type AiKnowledgeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiKnowledges to delete
+     */
+    where?: AiKnowledgeWhereInput
+    /**
+     * Limit how many AiKnowledges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiKnowledge without action
+   */
+  export type AiKnowledgeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiKnowledge
+     */
+    select?: AiKnowledgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiKnowledge
+     */
+    omit?: AiKnowledgeOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -3564,6 +4451,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     profilePhoto: string | null
+    contactNumber: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3571,6 +4459,7 @@ export namespace Prisma {
     needPasswordChange: boolean | null
     isDeleted: boolean | null
     deletedAt: Date | null
+    suspendedAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3580,6 +4469,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     image: string | null
     profilePhoto: string | null
+    contactNumber: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3587,6 +4477,7 @@ export namespace Prisma {
     needPasswordChange: boolean | null
     isDeleted: boolean | null
     deletedAt: Date | null
+    suspendedAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3596,6 +4487,7 @@ export namespace Prisma {
     emailVerified: number
     image: number
     profilePhoto: number
+    contactNumber: number
     role: number
     createdAt: number
     updatedAt: number
@@ -3603,6 +4495,7 @@ export namespace Prisma {
     needPasswordChange: number
     isDeleted: number
     deletedAt: number
+    suspendedAt: number
     _all: number
   }
 
@@ -3614,6 +4507,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     profilePhoto?: true
+    contactNumber?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -3621,6 +4515,7 @@ export namespace Prisma {
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
+    suspendedAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3630,6 +4525,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     profilePhoto?: true
+    contactNumber?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -3637,6 +4533,7 @@ export namespace Prisma {
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
+    suspendedAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3646,6 +4543,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     profilePhoto?: true
+    contactNumber?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -3653,6 +4551,7 @@ export namespace Prisma {
     needPasswordChange?: true
     isDeleted?: true
     deletedAt?: true
+    suspendedAt?: true
     _all?: true
   }
 
@@ -3735,6 +4634,7 @@ export namespace Prisma {
     emailVerified: boolean
     image: string | null
     profilePhoto: string | null
+    contactNumber: string | null
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
@@ -3742,6 +4642,7 @@ export namespace Prisma {
     needPasswordChange: boolean
     isDeleted: boolean
     deletedAt: Date | null
+    suspendedAt: Date | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3768,6 +4669,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     profilePhoto?: boolean
+    contactNumber?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3775,6 +4677,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
+    suspendedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     admin?: boolean | User$adminArgs<ExtArgs>
     moderator?: boolean | User$moderatorArgs<ExtArgs>
@@ -3794,6 +4697,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     profilePhoto?: boolean
+    contactNumber?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3801,6 +4705,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
+    suspendedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3810,6 +4715,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     profilePhoto?: boolean
+    contactNumber?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3817,6 +4723,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
+    suspendedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3826,6 +4733,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     profilePhoto?: boolean
+    contactNumber?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3833,9 +4741,10 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: boolean
+    suspendedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "profilePhoto" | "role" | "createdAt" | "updatedAt" | "status" | "needPasswordChange" | "isDeleted" | "deletedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "profilePhoto" | "contactNumber" | "role" | "createdAt" | "updatedAt" | "status" | "needPasswordChange" | "isDeleted" | "deletedAt" | "suspendedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     admin?: boolean | User$adminArgs<ExtArgs>
@@ -3871,6 +4780,7 @@ export namespace Prisma {
       emailVerified: boolean
       image: string | null
       profilePhoto: string | null
+      contactNumber: string | null
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
@@ -3878,6 +4788,7 @@ export namespace Prisma {
       needPasswordChange: boolean
       isDeleted: boolean
       deletedAt: Date | null
+      suspendedAt: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4316,6 +5227,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly image: FieldRef<"User", 'String'>
     readonly profilePhoto: FieldRef<"User", 'String'>
+    readonly contactNumber: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -4323,6 +5235,7 @@ export namespace Prisma {
     readonly needPasswordChange: FieldRef<"User", 'Boolean'>
     readonly isDeleted: FieldRef<"User", 'Boolean'>
     readonly deletedAt: FieldRef<"User", 'DateTime'>
+    readonly suspendedAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -11620,7 +12533,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     status: $Enums.ProductStatus | null
     report: number | null
-    reportedStatus: string | null
+    reportedStatus: boolean | null
+    links: string | null
     ownerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -11636,7 +12550,8 @@ export namespace Prisma {
     isDeleted: boolean | null
     status: $Enums.ProductStatus | null
     report: number | null
-    reportedStatus: string | null
+    reportedStatus: boolean | null
+    links: string | null
     ownerId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -11653,6 +12568,7 @@ export namespace Prisma {
     status: number
     report: number
     reportedStatus: number
+    links: number
     ownerId: number
     createdAt: number
     updatedAt: number
@@ -11681,6 +12597,7 @@ export namespace Prisma {
     status?: true
     report?: true
     reportedStatus?: true
+    links?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
@@ -11697,6 +12614,7 @@ export namespace Prisma {
     status?: true
     report?: true
     reportedStatus?: true
+    links?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
@@ -11713,6 +12631,7 @@ export namespace Prisma {
     status?: true
     report?: true
     reportedStatus?: true
+    links?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
@@ -11815,7 +12734,8 @@ export namespace Prisma {
     isDeleted: boolean
     status: $Enums.ProductStatus
     report: number
-    reportedStatus: string | null
+    reportedStatus: boolean
+    links: string
     ownerId: string
     createdAt: Date
     updatedAt: Date
@@ -11851,6 +12771,7 @@ export namespace Prisma {
     status?: boolean
     report?: boolean
     reportedStatus?: boolean
+    links?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11873,6 +12794,7 @@ export namespace Prisma {
     status?: boolean
     report?: boolean
     reportedStatus?: boolean
+    links?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11890,6 +12812,7 @@ export namespace Prisma {
     status?: boolean
     report?: boolean
     reportedStatus?: boolean
+    links?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11907,12 +12830,13 @@ export namespace Prisma {
     status?: boolean
     report?: boolean
     reportedStatus?: boolean
+    links?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "photo" | "description" | "votes" | "isFeatured" | "isDeleted" | "status" | "report" | "reportedStatus" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "photo" | "description" | "votes" | "isFeatured" | "isDeleted" | "status" | "report" | "reportedStatus" | "links" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     reportedUsers?: boolean | Product$reportedUsersArgs<ExtArgs>
@@ -11947,7 +12871,8 @@ export namespace Prisma {
       isDeleted: boolean
       status: $Enums.ProductStatus
       report: number
-      reportedStatus: string | null
+      reportedStatus: boolean
+      links: string
       ownerId: string
       createdAt: Date
       updatedAt: Date
@@ -12388,7 +13313,8 @@ export namespace Prisma {
     readonly isDeleted: FieldRef<"Product", 'Boolean'>
     readonly status: FieldRef<"Product", 'ProductStatus'>
     readonly report: FieldRef<"Product", 'Int'>
-    readonly reportedStatus: FieldRef<"Product", 'String'>
+    readonly reportedStatus: FieldRef<"Product", 'Boolean'>
+    readonly links: FieldRef<"Product", 'String'>
     readonly ownerId: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
@@ -19463,6 +20389,14 @@ export namespace Prisma {
   export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
 
 
+  export const AiKnowledgeScalarFieldEnum: {
+    id: 'id',
+    content: 'content'
+  };
+
+  export type AiKnowledgeScalarFieldEnum = (typeof AiKnowledgeScalarFieldEnum)[keyof typeof AiKnowledgeScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -19470,13 +20404,15 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     profilePhoto: 'profilePhoto',
+    contactNumber: 'contactNumber',
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     status: 'status',
     needPasswordChange: 'needPasswordChange',
     isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    suspendedAt: 'suspendedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -19584,6 +20520,7 @@ export namespace Prisma {
     status: 'status',
     report: 'report',
     reportedStatus: 'reportedStatus',
+    links: 'links',
     ownerId: 'ownerId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -19911,6 +20848,43 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Admin"> | string
   }
 
+  export type AiKnowledgeWhereInput = {
+    AND?: AiKnowledgeWhereInput | AiKnowledgeWhereInput[]
+    OR?: AiKnowledgeWhereInput[]
+    NOT?: AiKnowledgeWhereInput | AiKnowledgeWhereInput[]
+    id?: StringFilter<"AiKnowledge"> | string
+    content?: StringFilter<"AiKnowledge"> | string
+  }
+
+  export type AiKnowledgeOrderByWithRelationInput = {
+    id?: SortOrder
+    content?: SortOrder
+  }
+
+  export type AiKnowledgeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiKnowledgeWhereInput | AiKnowledgeWhereInput[]
+    OR?: AiKnowledgeWhereInput[]
+    NOT?: AiKnowledgeWhereInput | AiKnowledgeWhereInput[]
+    content?: StringFilter<"AiKnowledge"> | string
+  }, "id">
+
+  export type AiKnowledgeOrderByWithAggregationInput = {
+    id?: SortOrder
+    content?: SortOrder
+    _count?: AiKnowledgeCountOrderByAggregateInput
+    _max?: AiKnowledgeMaxOrderByAggregateInput
+    _min?: AiKnowledgeMinOrderByAggregateInput
+  }
+
+  export type AiKnowledgeScalarWhereWithAggregatesInput = {
+    AND?: AiKnowledgeScalarWhereWithAggregatesInput | AiKnowledgeScalarWhereWithAggregatesInput[]
+    OR?: AiKnowledgeScalarWhereWithAggregatesInput[]
+    NOT?: AiKnowledgeScalarWhereWithAggregatesInput | AiKnowledgeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiKnowledge"> | string
+    content?: StringWithAggregatesFilter<"AiKnowledge"> | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -19921,6 +20895,7 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     profilePhoto?: StringNullableFilter<"User"> | string | null
+    contactNumber?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -19928,6 +20903,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    suspendedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     accounts?: AccountListRelationFilter
     admin?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     moderator?: XOR<ModeratorNullableScalarRelationFilter, ModeratorWhereInput> | null
@@ -19946,6 +20922,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     profilePhoto?: SortOrderInput | SortOrder
+    contactNumber?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -19953,6 +20930,7 @@ export namespace Prisma {
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    suspendedAt?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     admin?: AdminOrderByWithRelationInput
     moderator?: ModeratorOrderByWithRelationInput
@@ -19974,6 +20952,7 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     profilePhoto?: StringNullableFilter<"User"> | string | null
+    contactNumber?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -19981,6 +20960,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    suspendedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     accounts?: AccountListRelationFilter
     admin?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     moderator?: XOR<ModeratorNullableScalarRelationFilter, ModeratorWhereInput> | null
@@ -19999,6 +20979,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     profilePhoto?: SortOrderInput | SortOrder
+    contactNumber?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20006,6 +20987,7 @@ export namespace Prisma {
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    suspendedAt?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -20021,6 +21003,7 @@ export namespace Prisma {
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     profilePhoto?: StringNullableWithAggregatesFilter<"User"> | string | null
+    contactNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -20028,6 +21011,7 @@ export namespace Prisma {
     needPasswordChange?: BoolWithAggregatesFilter<"User"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    suspendedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type SessionWhereInput = {
@@ -20496,7 +21480,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Product"> | boolean
     status?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     report?: IntFilter<"Product"> | number
-    reportedStatus?: StringNullableFilter<"Product"> | string | null
+    reportedStatus?: BoolFilter<"Product"> | boolean
+    links?: StringFilter<"Product"> | string
     ownerId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -20517,7 +21502,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     status?: SortOrder
     report?: SortOrder
-    reportedStatus?: SortOrderInput | SortOrder
+    reportedStatus?: SortOrder
+    links?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20541,7 +21527,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Product"> | boolean
     status?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     report?: IntFilter<"Product"> | number
-    reportedStatus?: StringNullableFilter<"Product"> | string | null
+    reportedStatus?: BoolFilter<"Product"> | boolean
+    links?: StringFilter<"Product"> | string
     ownerId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -20562,7 +21549,8 @@ export namespace Prisma {
     isDeleted?: SortOrder
     status?: SortOrder
     report?: SortOrder
-    reportedStatus?: SortOrderInput | SortOrder
+    reportedStatus?: SortOrder
+    links?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20586,7 +21574,8 @@ export namespace Prisma {
     isDeleted?: BoolWithAggregatesFilter<"Product"> | boolean
     status?: EnumProductStatusWithAggregatesFilter<"Product"> | $Enums.ProductStatus
     report?: IntWithAggregatesFilter<"Product"> | number
-    reportedStatus?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    reportedStatus?: BoolWithAggregatesFilter<"Product"> | boolean
+    links?: StringWithAggregatesFilter<"Product"> | string
     ownerId?: StringWithAggregatesFilter<"Product"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
@@ -21055,6 +22044,26 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AiKnowledgeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AiKnowledgeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AiKnowledgeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AiKnowledgeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -21062,6 +22071,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21069,6 +22079,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -21087,6 +22098,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21094,6 +22106,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -21112,6 +22125,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21119,6 +22133,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -21137,6 +22152,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21144,6 +22160,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -21162,6 +22179,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21169,6 +22187,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -21178,6 +22197,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21185,6 +22205,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -21194,6 +22215,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21201,6 +22223,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SessionCreateInput = {
@@ -21720,7 +22743,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutProductsInput
@@ -21740,7 +22764,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21760,7 +22785,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutProductsNestedInput
@@ -21780,7 +22806,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21800,7 +22827,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21816,7 +22844,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21831,7 +22860,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22392,6 +23422,21 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type AiKnowledgeCountOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+  }
+
+  export type AiKnowledgeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+  }
+
+  export type AiKnowledgeMinOrderByAggregateInput = {
+    id?: SortOrder
+    content?: SortOrder
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -22488,6 +23533,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     profilePhoto?: SortOrder
+    contactNumber?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22495,6 +23541,7 @@ export namespace Prisma {
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
+    suspendedAt?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -22504,6 +23551,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     profilePhoto?: SortOrder
+    contactNumber?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22511,6 +23559,7 @@ export namespace Prisma {
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
+    suspendedAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -22520,6 +23569,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     profilePhoto?: SortOrder
+    contactNumber?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22527,6 +23577,7 @@ export namespace Prisma {
     needPasswordChange?: SortOrder
     isDeleted?: SortOrder
     deletedAt?: SortOrder
+    suspendedAt?: SortOrder
   }
 
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -22892,6 +23943,7 @@ export namespace Prisma {
     status?: SortOrder
     report?: SortOrder
     reportedStatus?: SortOrder
+    links?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22913,6 +23965,7 @@ export namespace Prisma {
     status?: SortOrder
     report?: SortOrder
     reportedStatus?: SortOrder
+    links?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22929,6 +23982,7 @@ export namespace Prisma {
     status?: SortOrder
     report?: SortOrder
     reportedStatus?: SortOrder
+    links?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24336,6 +25390,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24343,6 +25398,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
     products?: ProductCreateNestedManyWithoutOwnerInput
@@ -24360,6 +25416,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24367,6 +25424,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
     products?: ProductUncheckedCreateNestedManyWithoutOwnerInput
@@ -24400,6 +25458,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24407,6 +25466,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
     products?: ProductUpdateManyWithoutOwnerNestedInput
@@ -24424,6 +25484,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24431,6 +25492,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
     products?: ProductUncheckedUpdateManyWithoutOwnerNestedInput
@@ -24553,7 +25615,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     reportedUsers?: ProductReportCreateNestedManyWithoutProductInput
@@ -24572,7 +25635,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     reportedUsers?: ProductReportUncheckedCreateNestedManyWithoutProductInput
@@ -24866,7 +25930,8 @@ export namespace Prisma {
     isDeleted?: BoolFilter<"Product"> | boolean
     status?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     report?: IntFilter<"Product"> | number
-    reportedStatus?: StringNullableFilter<"Product"> | string | null
+    reportedStatus?: BoolFilter<"Product"> | boolean
+    links?: StringFilter<"Product"> | string
     ownerId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -25030,6 +26095,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25037,6 +26103,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -25054,6 +26121,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25061,6 +26129,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -25094,6 +26163,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25101,6 +26171,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -25118,6 +26189,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25125,6 +26197,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -25142,6 +26215,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25149,6 +26223,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
     products?: ProductCreateNestedManyWithoutOwnerInput
@@ -25166,6 +26241,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25173,6 +26249,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
     products?: ProductUncheckedCreateNestedManyWithoutOwnerInput
@@ -25206,6 +26283,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25213,6 +26291,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
     products?: ProductUpdateManyWithoutOwnerNestedInput
@@ -25230,6 +26309,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25237,6 +26317,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
     products?: ProductUncheckedUpdateManyWithoutOwnerNestedInput
@@ -25254,6 +26335,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25261,6 +26343,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     products?: ProductCreateNestedManyWithoutOwnerInput
@@ -25278,6 +26361,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25285,6 +26369,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     products?: ProductUncheckedCreateNestedManyWithoutOwnerInput
@@ -25318,6 +26403,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25325,6 +26411,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     products?: ProductUpdateManyWithoutOwnerNestedInput
@@ -25342,6 +26429,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25349,6 +26437,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     products?: ProductUncheckedUpdateManyWithoutOwnerNestedInput
@@ -25438,6 +26527,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25445,6 +26535,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -25462,6 +26553,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25469,6 +26561,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -25594,6 +26687,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25601,6 +26695,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -25618,6 +26713,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25625,6 +26721,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -25717,7 +26814,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutProductsInput
@@ -25736,7 +26834,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25757,6 +26856,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25764,6 +26864,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -25781,6 +26882,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25788,6 +26890,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -25824,7 +26927,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutProductsNestedInput
@@ -25843,7 +26947,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25870,6 +26975,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25877,6 +26983,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -25894,6 +27001,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25901,6 +27009,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -25921,7 +27030,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutProductsInput
@@ -25940,7 +27050,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25994,7 +27105,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutProductsNestedInput
@@ -26013,7 +27125,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26057,7 +27170,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutProductsInput
@@ -26076,7 +27190,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26097,6 +27212,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26104,6 +27220,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -26121,6 +27238,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26128,6 +27246,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -26164,7 +27283,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutProductsNestedInput
@@ -26183,7 +27303,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26210,6 +27331,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26217,6 +27339,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -26234,6 +27357,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26241,6 +27365,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -26261,7 +27386,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutProductsInput
@@ -26280,7 +27406,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     ownerId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26301,6 +27428,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26308,6 +27436,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -26325,6 +27454,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26332,6 +27462,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -26368,7 +27499,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutProductsNestedInput
@@ -26387,7 +27519,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26414,6 +27547,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26421,6 +27555,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -26438,6 +27573,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26445,6 +27581,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -26490,6 +27627,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26497,6 +27635,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     moderator?: ModeratorCreateNestedOneWithoutUserInput
@@ -26514,6 +27653,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: string | null
     profilePhoto?: string | null
+    contactNumber?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26521,6 +27661,7 @@ export namespace Prisma {
     needPasswordChange?: boolean
     isDeleted?: boolean
     deletedAt?: Date | string | null
+    suspendedAt?: Date | string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     moderator?: ModeratorUncheckedCreateNestedOneWithoutUserInput
@@ -26583,6 +27724,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26590,6 +27732,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUpdateOneWithoutUserNestedInput
@@ -26607,6 +27750,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNumber?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26614,6 +27758,7 @@ export namespace Prisma {
     needPasswordChange?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    suspendedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     moderator?: ModeratorUncheckedUpdateOneWithoutUserNestedInput
@@ -26683,7 +27828,8 @@ export namespace Prisma {
     isDeleted?: boolean
     status?: $Enums.ProductStatus
     report?: number
-    reportedStatus?: string | null
+    reportedStatus?: boolean
+    links?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -26775,7 +27921,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportedUsers?: ProductReportUpdateManyWithoutProductNestedInput
@@ -26794,7 +27941,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportedUsers?: ProductReportUncheckedUpdateManyWithoutProductNestedInput
@@ -26813,7 +27961,8 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     report?: IntFieldUpdateOperationsInput | number
-    reportedStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedStatus?: BoolFieldUpdateOperationsInput | boolean
+    links?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

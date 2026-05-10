@@ -52,10 +52,12 @@ const getAllAdmin = async (
     });
   }
 
-  // Filter by gender (on admin)
-  if (filterData.gender) {
+  // Filter by role (on user relation)
+  if (filterData.role) {
     andCondition.push({
-      gender: filterData.gender,
+      user: {
+        role: filterData.role as Role,
+      },
     });
   }
 
@@ -107,20 +109,19 @@ const updateAdmin = async (id: string, payload: IUpdateAdminPayload, userId: str
       id: userId,
     },
   });
-
-
-
-
-  const isAdminExist = await prisma.admin.findUnique({
+  
+  const isAdminExist = await prisma.admin.findFirst({
     where: {
-      id,
+      OR: [
+        { id },
+        { userId: id }
+      ]
     },
   });
 
   if (!isAdminExist) {
     throw new AppError(status.NOT_FOUND, "Admin not found");
   }
-
 
   if (currentUser?.role !== "SUPER_ADMIN") {
     if (currentUser?.id !== isAdminExist.userId) {
@@ -131,23 +132,36 @@ const updateAdmin = async (id: string, payload: IUpdateAdminPayload, userId: str
     }
   }
 
-
-  const result = await prisma.admin.update({
-    where: {
-      id,
-    },
-    data: { ...payload }
-  });
-  if (payload?.name) {
-    await prisma.user.update({
+  // Atomically update both Admin and User records
+  const result = await prisma.$transaction(async (tx) => {
+    // 1. Update Admin record
+    const updatedAdmin = await tx.admin.update({
       where: {
-        id: isAdminExist.userId,
+        id: isAdminExist.id,
       },
-      data: {
-        name: payload.name,
-      },
+      data: { ...payload }
     });
-  }
+
+    // 2. Prepare user update data based on what's in the payload
+    const userUpdateData: any = {};
+    if (payload.name) userUpdateData.name = payload.name;
+    if (payload.email) userUpdateData.email = payload.email;
+    if (payload.profilePhoto) userUpdateData.profilePhoto = payload.profilePhoto;
+    if (payload.contactNumber) userUpdateData.contactNumber = payload.contactNumber;
+
+    // 3. Update User record if there's anything to update
+    if (Object.keys(userUpdateData).length > 0) {
+      await tx.user.update({
+        where: {
+          id: isAdminExist.userId,
+        },
+        data: userUpdateData,
+      });
+    }
+
+    return updatedAdmin;
+  });
+
   return result;
 };
 
@@ -276,7 +290,10 @@ const changeUserStatus = async (
       },
       data: {
         status: userStatus,
-
+        // Record the time of suspension for the auto-delete cron job
+        ...(userStatus === UserStatus.SUSPENDED && { suspendedAt: new Date() }),
+        // Clear suspendedAt if status is being changed away from SUSPENDED
+        ...(userStatus !== UserStatus.SUSPENDED && { suspendedAt: null }),
       },
     });
     if (userStatus === UserStatus.INACTIVE) {

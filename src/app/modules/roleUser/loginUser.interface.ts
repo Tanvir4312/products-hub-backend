@@ -1,6 +1,7 @@
 export interface IUpdateUserPayload {
     name?: string;
     email?: string;
+    contactNumber?: string;
     profilePhoto?: string;
 }
 

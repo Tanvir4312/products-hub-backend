@@ -5,6 +5,7 @@ model User {
   emailVerified      Boolean         @default(true)
   image              String?
   profilePhoto       String?
+  contactNumber      String?
   role               Role            @default(USER)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -12,6 +13,7 @@ model User {
   needPasswordChange Boolean         @default(false)
   isDeleted          Boolean         @default(false)
   deletedAt          DateTime?
+  suspendedAt        DateTime?
   accounts           Account[]
   admin              Admin?
   moderator          Moderator?

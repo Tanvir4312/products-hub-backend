@@ -38,4 +38,11 @@ router.delete(
     CouponController.deleteCoupon
 );
 
+// Validate coupon (authenticated users)
+router.post(
+    "/validate-coupon",
+    checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN),
+    CouponController.validateCoupon
+);
+
 export const CouponRoutes = router;

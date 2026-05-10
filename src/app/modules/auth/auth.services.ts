@@ -121,10 +121,11 @@ const getMe = async (user: IRequestUser) => {
         where: {
             id: user.userId,
         },
-
+ 
         include: {
             admin: true,
             moderator: true,
+            subscriber: true,
         },
     });
 };

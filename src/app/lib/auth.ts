@@ -17,11 +17,6 @@ export const auth = betterAuth({
         enabled: true,
         // requireEmailVerification: true,
     },
-    emailVerification: {
-        sendOnSignUp: false,
-        sendOnSignIn: true,
-        autoSignInAfterVerification: true,
-    },
 
     user: {
         additionalFields: {
@@ -39,6 +34,11 @@ export const auth = betterAuth({
                 type: "boolean",
                 required: true,
                 defaultValue: false,
+            },
+            contactNumber: {
+                type: "string",
+                required: true,
+                defaultValue: "",
             },
             isDeleted: {
                 type: "boolean",

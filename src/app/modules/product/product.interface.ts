@@ -5,6 +5,7 @@ export interface ICreateProductPayload {
     description: string;
     tagIds: string[];
     photo: string;
+    links: string;
 }
 
 export interface IUpdateProductPayload {
@@ -12,12 +13,16 @@ export interface IUpdateProductPayload {
     description?: string;
     tagIds?: string[];
     photo?: string;
-    featured?: boolean;
-    status ?: ProductStatus
+    isFeatured?: boolean;
+    status?: ProductStatus;
+    links?: string;
 }
 
 export interface IProductFilterRequest {
     searchTerm?: string;
     status?: ProductStatus;
     ownerId?: string;
+    tagName?: string;
+    isFeatured?: boolean | string;
+    reportedStatus?: boolean | string;
 }

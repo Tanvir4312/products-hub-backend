@@ -4,13 +4,12 @@ import status from "http-status";
 import { ICreateProductPayload, IUpdateProductPayload, IProductFilterRequest } from "./product.interface";
 import { Prisma } from "../../../../generated/prisma/index.js";
 import { productSearchableFields } from "./product.constant";
-import { getCache, setCache } from "../../utils/cache";
 
 const createProduct = async (
     payload: ICreateProductPayload,
     ownerId: string
 ) => {
-    const { name, description, tagIds, photo } = payload;
+    const { name, description, tagIds, photo, links } = payload;
 
     // Trim all string inputs
     const trimmedName = name.trim();
@@ -51,6 +50,7 @@ const createProduct = async (
                 description: trimmedDescription,
                 ownerId: trimmedOwnerId,
                 photo,
+                links,
             },
         });
 
@@ -105,15 +105,6 @@ const getAllProducts = async (
     const sortBy = options.sortBy || "createdAt";
     const sortOrder = options.sortOrder || "desc";
 
-    // Generate cache key based on query params
-    const cacheKey = `products:list:${JSON.stringify({ searchTerm, filterData, limit, skip, sortBy, sortOrder })}`;
-
-    // Check cache first
-    const cached = await getCache<{ data: any; meta: any }>(cacheKey);
-    if (cached) {
-        return cached;
-    }
-
     const andCondition: Prisma.ProductWhereInput[] = [];
 
     // Only show non-deleted products
@@ -162,15 +153,42 @@ const getAllProducts = async (
         });
     }
 
+    if (filterData.tagName) {
+        andCondition.push({
+            tags: {
+                some: {
+                    tag: {
+                        name: {
+                            equals: filterData.tagName,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            },
+        });
+    }
+
+    if (filterData.isFeatured !== undefined) {
+        andCondition.push({
+            isFeatured: filterData.isFeatured === "true" || filterData.isFeatured === true,
+        });
+    }
+
+    if (filterData.reportedStatus !== undefined) {
+        andCondition.push({
+            reportedStatus: filterData.reportedStatus === "true" || filterData.reportedStatus === true,
+        });
+    }
+
     const whereConditions: Prisma.ProductWhereInput =
         andCondition.length > 0 ? { AND: andCondition } : { isDeleted: false };
 
     const products = await prisma.product.findMany({
         take: limit,
         skip,
-        orderBy: {
-            [sortBy]: sortOrder === "asc" ? "asc" : "desc",
-        },
+        orderBy: sortBy === "votedUsers" 
+            ? { votedUsers: { _count: sortOrder === "asc" ? "asc" : "desc" } }
+            : { [sortBy]: sortOrder === "asc" ? "asc" : "desc" },
         where: whereConditions,
         include: {
             owner: {
@@ -191,22 +209,32 @@ const getAllProducts = async (
                     },
                 },
             },
-            reviews : {
-                select : {
-                    rating : true,
-                    comment : true,
-                    user : {
-                        select : {
-                            name : true,
-                            profilePhoto : true
+            reviews: {
+                select: {
+                    rating: true,
+                    comment: true,
+                    user: {
+                        select: {
+                            name: true,
+                            profilePhoto: true
                         }
                     }
                 }
-            },   
+            },
+            votedUsers: {
+                select: {
+                    userId: true,
+                },
+            },
+            reportedUsers: {
+                select: {
+                    userId: true,
+                },
+            },
             _count: {
                 select: {
                     votedUsers: true,
-                    reportedUsers : true,
+                    reportedUsers: true,
                     reviews: true,
                 },
             },
@@ -217,7 +245,7 @@ const getAllProducts = async (
         where: whereConditions,
     });
 
-    const result = {
+    return {
         data: products,
         meta: {
             limit,
@@ -226,12 +254,170 @@ const getAllProducts = async (
             total: totalProducts,
         },
     };
+};
 
-    // Cache result with TTL between 60-120 seconds
-    const ttl = Math.floor(Math.random() * 61) + 60; // Random between 60-120
-    await setCache(cacheKey, result, ttl);
+const getMyProducts = async (
+    userId: string,
+    filters: IProductFilterRequest,
+    options: {
+        page: number;
+        limit: number;
+        skip: number;
+        sortBy?: string;
+        sortOrder?: string;
+    }
+) => {
+    const { searchTerm, ...filterData } = filters;
+    const { limit, skip, page } = options;
+    const sortBy = options.sortBy || "createdAt";
+    const sortOrder = options.sortOrder || "desc";
 
-    return result;
+    const andCondition: Prisma.ProductWhereInput[] = [];
+
+    // Only show user's own products
+    andCondition.push({
+        ownerId: userId,
+        isDeleted: false,
+    });
+
+    // Search by name, description, or tag name
+    if (searchTerm) {
+        andCondition.push({
+            OR: [
+                ...productSearchableFields.map((field) => ({
+                    [field]: {
+                        contains: searchTerm,
+                        mode: "insensitive",
+                    },
+                })),
+                {
+                    tags: {
+                        some: {
+                            tag: {
+                                name: {
+                                    contains: searchTerm,
+                                    mode: "insensitive",
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        });
+    }
+
+    if (filterData.status) {
+        andCondition.push({
+            status: filterData.status,
+        });
+    }
+
+    if (filterData.tagName) {
+        andCondition.push({
+            tags: {
+                some: {
+                    tag: {
+                        name: {
+                            equals: filterData.tagName,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            },
+        });
+    }
+
+    if (filterData.isFeatured !== undefined) {
+        andCondition.push({
+            isFeatured: filterData.isFeatured === 'true' || filterData.isFeatured === true,
+        });
+    }
+
+    const whereConditions: Prisma.ProductWhereInput = { AND: andCondition };
+
+    const products = await prisma.product.findMany({
+        take: limit,
+        skip,
+        orderBy: {
+            [sortBy]: sortOrder === "asc" ? "asc" : "desc",
+        },
+        where: whereConditions,
+        include: {
+            tags: {
+                include: {
+                    tag: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+            reviews: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profilePhoto: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+            votedUsers: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profilePhoto: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+            reportedUsers: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profilePhoto: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+            _count: {
+                select: {
+                    votedUsers: true,
+                    reportedUsers: true,
+                    reviews: true,
+                },
+            },
+        },
+    });
+
+    const totalProducts = await prisma.product.count({
+        where: whereConditions,
+    });
+
+    return {
+        data: products,
+        meta: {
+            limit,
+            current_Page: page,
+            total_page: Math.ceil(totalProducts / limit),
+            total: totalProducts,
+        },
+    };
 };
 
 const getProductById = async (id: string) => {
@@ -264,6 +450,20 @@ const getProductById = async (id: string) => {
                     userId: true,
                 },
             },
+            reportedUsers: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profilePhoto: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
             reviews: {
                 include: {
                     user: {
@@ -281,6 +481,7 @@ const getProductById = async (id: string) => {
             _count: {
                 select: {
                     votedUsers: true,
+                    reportedUsers: true,
                     reviews: true,
                 },
             },
@@ -300,7 +501,7 @@ const updateProduct = async (
     currentUserId: string,
     currentUserRole: string
 ) => {
-    const { name, description, tagIds, photo, status: productStatus } = payload;
+    const { name, description, tagIds, photo, status: productStatus, links, isFeatured } = payload;
 
     // Check if product exists
     const existingProduct = await prisma.product.findUnique({
@@ -316,8 +517,10 @@ const updateProduct = async (
         throw new AppError(status.NOT_FOUND, "Product not found");
     }
 
-    // Check authorization - only owner or ADMIN/SUPER_ADMIN can update
-    if (currentUserRole !== "ADMIN" && currentUserRole !== "SUPER_ADMIN") {
+    // Check authorization - only owner or ADMIN/SUPER_ADMIN/MODERATOR can update
+    const isPrivilegedUser = currentUserRole === "ADMIN" || currentUserRole === "SUPER_ADMIN" || currentUserRole === "MODERATOR";
+    
+    if (!isPrivilegedUser) {
         if (existingProduct.ownerId !== currentUserId) {
             throw new AppError(
                 status.FORBIDDEN,
@@ -333,6 +536,8 @@ const updateProduct = async (
     if (description !== undefined) updateData.description = description.trim();
     if (photo !== undefined) updateData.photo = photo;
     if (productStatus !== undefined) updateData.status = productStatus;
+    if (links !== undefined) updateData.links = links;
+    if (isFeatured !== undefined) updateData.isFeatured = isFeatured;
 
     // Handle tag updates
     let uniqueTagIds: string[] | undefined;
@@ -468,6 +673,7 @@ const deleteProduct = async (
 export const ProductServices = {
     createProduct,
     getAllProducts,
+    getMyProducts,
     getProductById,
     updateProduct,
     deleteProduct,

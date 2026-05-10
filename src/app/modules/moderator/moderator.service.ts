@@ -128,9 +128,12 @@ const moderatorUpdate = async (
 
 ) => {
 
-  const isModeratorExis = await prisma.moderator.findUnique({
+  const isModeratorExis = await prisma.moderator.findFirst({
     where: {
-      id,
+      OR: [
+        { id },
+        { userId: id }
+      ],
       isDeleted: false,
     },
     include: {
@@ -154,37 +157,34 @@ const moderatorUpdate = async (
 
 
   return await prisma.$transaction(async (tx) => {
-    if (payload) {
-      await tx.moderator.update({
-        where: {
-          id,
-        },
-        data: {
-          ...payload
-        }
-      });
-    }
-    if (payload?.name) {
+    // 1. Update Moderator record
+    const updatedModerator = await tx.moderator.update({
+      where: {
+        id: isModeratorExis.id,
+      },
+      data: {
+        ...payload
+      }
+    });
+
+    // 2. Prepare user update data
+    const userUpdateData: any = {};
+    if (payload.name) userUpdateData.name = payload.name;
+    if (payload.email) userUpdateData.email = payload.email;
+    if (payload.profilePhoto) userUpdateData.profilePhoto = payload.profilePhoto;
+    if (payload.contactNumber) userUpdateData.contactNumber = payload.contactNumber;
+
+    // 3. Update User record
+    if (Object.keys(userUpdateData).length > 0) {
       await tx.user.update({
         where: {
           id: isModeratorExis.userId,
         },
-        data: {
-          name: payload?.name,
-        },
-      });
-    }
-    if (payload?.email) {
-      await tx.user.update({
-        where: {
-          id: isModeratorExis.userId,
-        },
-        data: {
-          email: payload?.email,
-        },
+        data: userUpdateData,
       });
     }
 
+    // 4. Return the updated moderator with user relation
     const moderator = await tx.moderator.findUnique({
       where: {
         id,

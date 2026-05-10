@@ -3,7 +3,7 @@ import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { ICreateAdmin, ICreateModeratorPayload } from "./adminModeratorCreate..interface";
 import { auth } from "../../lib/auth";
-import { Prisma, Role } from "../../../../generated/prisma/index.js";
+import { Prisma, Role, UserStatus } from "../../../../generated/prisma/index.js";
 
 
 const createModerator = async (payload: ICreateModeratorPayload) => {
@@ -148,71 +148,73 @@ const createAdmins = async (payload: ICreateAdmin) => {
   }
 };
 
-const getAllUsers = async (searchTerm: string,
+const getAllUsers = async (
+  searchTerm: string,
   page: number,
   limit: number,
   skip: number,
   sortBy: string,
-  sortOrder: string
+  sortOrder: string,
+  filterRole?: string,
+  filterStatus?: string
 ) => {
-
-  //search by status
-  const status = searchTerm?.toUpperCase() === "ACTIVE"
-    ? "ACTIVE"
-    : searchTerm?.toUpperCase() === "INACTIVE"
-      ? "INACTIVE"
-      : searchTerm?.toUpperCase() === "SUSPENDED"
-        ? "SUSPENDED"
-        : undefined;
-
-
-  //search by role
-  const role = searchTerm?.toUpperCase() === Role.ADMIN
-    ? Role.ADMIN
-    : searchTerm?.toUpperCase() === Role.MODERATOR
-      ? Role.MODERATOR
-      : searchTerm?.toUpperCase() === Role.USER
-        ? Role.USER
-        : undefined
-
   const andCondition: Prisma.UserWhereInput[] = [];
+
+  // 1. Search term logic (existing)
   if (searchTerm) {
+    // Check if searchTerm matches a status or role for broad search
+    const statusVal = searchTerm?.toUpperCase() === UserStatus.ACTIVE
+      ? UserStatus.ACTIVE
+      : searchTerm?.toUpperCase() === UserStatus.INACTIVE
+        ? UserStatus.INACTIVE
+        : searchTerm?.toUpperCase() === UserStatus.SUSPENDED
+          ? UserStatus.SUSPENDED
+          : undefined;
+
+    const roleVal = searchTerm?.toUpperCase() === Role.ADMIN
+      ? Role.ADMIN
+      : searchTerm?.toUpperCase() === Role.MODERATOR
+        ? Role.MODERATOR
+        : searchTerm?.toUpperCase() === Role.USER
+          ? Role.USER
+          : undefined;
+
     andCondition.push({
       OR: [
-        {
-          name: {
-            contains: searchTerm,
-            mode: "insensitive",
-          },
-        },
-        {
-          email: {
-            contains: searchTerm,
-            mode: "insensitive",
-          },
-        },
-        {
-          role: {
-            equals: role,
-          },
-        },
-        {
-          status: {
-            equals: status,
-          },
-        },
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+        ...(roleVal ? [{ role: { equals: roleVal as Role } }] : []),
+        ...(statusVal ? [{ status: { equals: statusVal as UserStatus } }] : []),
       ],
     });
   }
+
+  // 2. Explicit Role filter
+  if (filterRole) {
+    andCondition.push({
+      role: filterRole as Role,
+    });
+  }
+
+  // 3. Explicit Status filter
+  if (filterStatus) {
+    andCondition.push({
+      status: {
+        equals: filterStatus as UserStatus,
+      },
+    });
+  }
+
+  const whereConditions: Prisma.UserWhereInput =
+    andCondition.length > 0 ? { AND: andCondition } : {};
+
   const result = await prisma.user.findMany({
     take: limit,
     skip,
     orderBy: {
-      [sortBy]: sortOrder,
+      [sortBy]: sortOrder === "asc" ? "asc" : "desc",
     },
-    where: andCondition.length > 0
-      ? { AND: andCondition }
-      : {},
+    where: whereConditions,
     select: {
       id: true,
       name: true,
@@ -228,8 +230,9 @@ const getAllUsers = async (searchTerm: string,
     },
   });
 
-  const totalUser = await prisma.user.count();
-
+  const totalUser = await prisma.user.count({
+    where: whereConditions,
+  });
   return {
     data: result,
     meta: {

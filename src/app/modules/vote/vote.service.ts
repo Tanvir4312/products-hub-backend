@@ -38,13 +38,20 @@ const voteProduct = async (
 
     if (existingVote) {
         // Toggle: remove vote (unvote)
-        await prisma.productVote.delete({
-            where: {
-                productId_userId: {
-                    productId,
-                    userId,
+        await prisma.$transaction(async (tx) => {
+            await tx.productVote.delete({
+                where: {
+                    productId_userId: {
+                        productId,
+                        userId,
+                    },
                 },
-            },
+            });
+
+            await tx.product.update({
+                where: { id: productId },
+                data: { votes: { decrement: 1 } },
+            });
         });
 
         return {
@@ -55,19 +62,28 @@ const voteProduct = async (
     }
 
     // Create new vote
-    const vote = await prisma.productVote.create({
-        data: {
-            productId,
-            userId,
-        },
-        include : {
-            user : {
-                select : {
-                    name : true,
-                    profilePhoto : true
+    const vote = await prisma.$transaction(async (tx) => {
+        const newVote = await tx.productVote.create({
+            data: {
+                productId,
+                userId,
+            },
+            include: {
+                user: {
+                    select: {
+                        name: true,
+                        profilePhoto: true
+                    }
                 }
             }
-        }
+        });
+
+        await tx.product.update({
+            where: { id: productId },
+            data: { votes: { increment: 1 } },
+        });
+
+        return newVote;
     });
 
     return {
@@ -75,7 +91,6 @@ const voteProduct = async (
         message: "Product voted successfully",
         voted: true,
         productId,
-       
     };
 };
 
@@ -111,14 +126,20 @@ const unvoteProduct = async (productId: string, userId: string) => {
         throw new AppError(status.NOT_FOUND, "You have not voted for this product");
     }
 
-    // Remove vote
-    await prisma.productVote.delete({
-        where: {
-            productId_userId: {
-                productId,
-                userId,
+    await prisma.$transaction(async (tx) => {
+        await tx.productVote.delete({
+            where: {
+                productId_userId: {
+                    productId,
+                    userId,
+                },
             },
-        },
+        });
+
+        await tx.product.update({
+            where: { id: productId },
+            data: { votes: { decrement: 1 } },
+        });
     });
 
     return {

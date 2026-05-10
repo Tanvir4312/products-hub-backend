@@ -55,6 +55,27 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getMyProducts = catchAsync(async (req: Request, res: Response) => {
+    const filters = pick(req.query, productFilterableFields);
+    const { page, limit, skip } = getPaginationOptions(req.query);
+    const sortBy = req.query.sortBy as string;
+    const sortOrder = req.query.sortOrder as string;
+    const currentUser = req.user;
+
+    const result = await ProductServices.getMyProducts(
+        currentUser.userId,
+        filters,
+        { page, limit, skip, sortBy, sortOrder }
+    );
+
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        message: "My products retrieved successfully",
+        success: true,
+        data: result,
+    });
+});
+
 const getProductById = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await ProductServices.getProductById(id);
@@ -116,6 +137,7 @@ const deleteProduct = catchAsync(async (req: Request, res: Response) => {
 export const ProductController = {
     createProduct,
     getAllProducts,
+    getMyProducts,
     getProductById,
     updateProduct,
     deleteProduct,
