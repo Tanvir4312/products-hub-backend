@@ -76,6 +76,17 @@ const getMyProducts = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getUpvotedProducts = catchAsync(async (req: Request, res: Response) => {
+    const currentUser = req.user;
+    const result = await ProductServices.getUpvotedProducts(currentUser.userId);
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        message: "Upvoted products retrieved successfully",
+        success: true,
+        data: result,
+    });
+});
+
 const getProductById = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await ProductServices.getProductById(id);
@@ -138,6 +149,7 @@ export const ProductController = {
     createProduct,
     getAllProducts,
     getMyProducts,
+    getUpvotedProducts,
     getProductById,
     updateProduct,
     deleteProduct,

@@ -8,9 +8,10 @@ export const createProductValidationSchema = z.object({
     description: z
         .string()
         .min(1, "Description is required"),
-    tagIds: z
-        .array(z.string())
-        .min(1, "At least one tag is required"),
+    tagIds: z.preprocess(
+        (val) => (typeof val === "string" ? [val] : val),
+        z.array(z.string()).min(1, "At least one tag is required")
+    ),
     links: z
         .string()
         .min(1, "Link is required")
@@ -26,9 +27,10 @@ export const updateProductValidationSchema = z.object({
         .string()
         .min(1, "Description is required")
         .optional(),
-    tagIds: z
-        .array(z.string())
-        .optional(),
+    tagIds: z.preprocess(
+        (val) => (typeof val === "string" ? [val] : val),
+        z.array(z.string()).optional()
+    ),
     status: z
         .enum([ProductStatus.PENDING, ProductStatus.APPROVED, ProductStatus.REJECTED])
         .optional(),

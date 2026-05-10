@@ -11,6 +11,29 @@ const createProduct = async (
 ) => {
     const { name, description, tagIds, photo, links } = payload;
 
+    // Check for free tier limit (2 products)
+    const subscriber = await prisma.subscriber.findUnique({
+        where: { userId: ownerId }
+    });
+
+    const isSubscribed = subscriber?.isSubscribed && subscriber?.paymentVerified;
+
+    if (!isSubscribed) {
+        const productCount = await prisma.product.count({
+            where: { 
+                ownerId, 
+                isDeleted: false 
+            }
+        });
+
+        if (productCount >= 2) {
+            throw new AppError(
+                status.FORBIDDEN,
+                "Free tier limit reached. You can only add up to 2 products. Please subscribe to unlock unlimited submissions."
+            );
+        }
+    }
+
     // Trim all string inputs
     const trimmedName = name.trim();
     const trimmedDescription = description.trim();
@@ -670,10 +693,19 @@ const deleteProduct = async (
     return { message: "Product deleted successfully" };
 };
 
+const getUpvotedProducts = async (userId: string) => {
+    const upvotes = await prisma.productVote.findMany({
+        where: { userId },
+        include: { product: true },
+    });
+    return upvotes.map((upvote) => upvote.product);
+};
+
 export const ProductServices = {
     createProduct,
     getAllProducts,
     getMyProducts,
+    getUpvotedProducts,
     getProductById,
     updateProduct,
     deleteProduct,

@@ -136,7 +136,7 @@ const getSuperAdminStatsData = async () => {
     // Subscription stats
     const verifiedSubscriberCount = await prisma.subscriber.count({
         where: {
-            status: SubscriptionStatus.VERIFIED
+            status: SubscriptionStatus.ACTIVE
         }
     });
 
@@ -324,6 +324,9 @@ const getAdminStatsData = async () => {
 const getProductStatusPieChartData = async () => {
     const productStatusDistribution = await prisma.product.groupBy({
         by: ["status"],
+        where: {
+            isDeleted: false
+        },
         _count: {
             id: true
         }

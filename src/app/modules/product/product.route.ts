@@ -30,6 +30,13 @@ router.get(
     ProductController.getMyProducts
 );
 
+// Get upvoted products (authenticated)
+router.get(
+    "/upvoted",
+    checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN, Role.MODERATOR),
+    ProductController.getUpvotedProducts
+);
+
 // Get single product by ID (public)
 router.get(
     "/:id",
