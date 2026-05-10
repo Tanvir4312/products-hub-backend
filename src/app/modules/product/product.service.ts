@@ -20,9 +20,9 @@ const createProduct = async (
 
     if (!isSubscribed) {
         const productCount = await prisma.product.count({
-            where: { 
-                ownerId, 
-                isDeleted: false 
+            where: {
+                ownerId,
+                isDeleted: false
             }
         });
 
@@ -209,7 +209,7 @@ const getAllProducts = async (
     const products = await prisma.product.findMany({
         take: limit,
         skip,
-        orderBy: sortBy === "votedUsers" 
+        orderBy: sortBy === "votedUsers"
             ? { votedUsers: { _count: sortOrder === "asc" ? "asc" : "desc" } }
             : { [sortBy]: sortOrder === "asc" ? "asc" : "desc" },
         where: whereConditions,
@@ -542,7 +542,7 @@ const updateProduct = async (
 
     // Check authorization - only owner or ADMIN/SUPER_ADMIN/MODERATOR can update
     const isPrivilegedUser = currentUserRole === "ADMIN" || currentUserRole === "SUPER_ADMIN" || currentUserRole === "MODERATOR";
-    
+
     if (!isPrivilegedUser) {
         if (existingProduct.ownerId !== currentUserId) {
             throw new AppError(
@@ -670,8 +670,8 @@ const deleteProduct = async (
         throw new AppError(status.NOT_FOUND, "Product not found");
     }
 
-    // Check authorization - only owner or ADMIN/SUPER_ADMIN can delete
-    if (currentUserRole !== "ADMIN" && currentUserRole !== "SUPER_ADMIN") {
+    // Check authorization - only owner or ADMIN/SUPER_ADMIN/MODERATOR can delete
+    if (currentUserRole !== "ADMIN" && currentUserRole !== "SUPER_ADMIN" && currentUserRole !== "MODERATOR") {
         if (existingProduct.ownerId !== currentUserId) {
             throw new AppError(
                 status.FORBIDDEN,
@@ -680,15 +680,23 @@ const deleteProduct = async (
         }
     }
 
-    // Soft delete
-    const result = await prisma.product.update({
-        where: {
-            id,
-        },
-        data: {
-            isDeleted: true,
-        },
-    });
+    if (existingProduct.status === "APPROVED") {
+        // Soft delete
+        await prisma.product.update({
+            where: {
+                id,
+            },
+            data: {
+                isDeleted: true,
+            },
+        });
+    } else {
+        await prisma.product.delete({
+            where: {
+                id,
+            },
+        });
+    }
 
     return { message: "Product deleted successfully" };
 };
